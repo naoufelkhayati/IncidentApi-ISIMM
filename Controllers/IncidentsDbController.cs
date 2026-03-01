@@ -13,6 +13,10 @@ namespace IncidentAPI_ISIMM_MP1_GL.Controllers
     [ApiController]
     public class IncidentsDbController : ControllerBase
     {
+        private static readonly string[] AllowedSeverities =
+        { "LOW", "MEDIUM", "HIGH", "CRITICAL" };
+        private static readonly string[] AllowedStatuses =
+        { "OPEN", "IN_PROGRESS", "RESOLVED" };
         private readonly IncidentsDbContext _context;
 
         public IncidentsDbController(IncidentsDbContext context)
@@ -77,6 +81,13 @@ namespace IncidentAPI_ISIMM_MP1_GL.Controllers
         [HttpPost]
         public async Task<ActionResult<Incident>> PostIncident(Incident incident)
         {
+            if (!AllowedSeverities.Contains(incident.Severity.ToUpper()))
+            {
+                return BadRequest($"Severity must be one of the following: {string.Join(", ", AllowedSeverities)}");
+            }
+
+            incident.Status = "OPEN";
+            incident.CreatedAt = DateTime.Now;
             _context.Incidents.Add(incident);
             await _context.SaveChangesAsync();
 
