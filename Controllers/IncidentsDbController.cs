@@ -103,5 +103,37 @@ namespace IncidentAPI_ISIMM_MP1_GL.Controllers
         {
             return _context.Incidents.Any(e => e.Id == id);
         }
+        [HttpGet("getbystatus/{status}")]
+        public IActionResult FilterByStatus(string status)
+        {
+           // var filteredIncidents = _context.Incidents.Where(i => i.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
+            var incidents = from i in _context.Incidents
+                            where i.Status.Contains(status)
+                            select i;
+            return Ok(incidents);
+        }
+        //[HttpGet("getbystatusasync/{status}")]
+        //public async Task<IActionResult> FilterByStatus2(string status)
+        //{
+        //    var incidents = await _context.Incidents.Where(i => i.Severity.Contains(status)).ToListAsync();
+
+        //    return Ok(incidents);
+        //}
+        [HttpGet("getbyseverity/{severity}")]
+        public IActionResult FilterBySeverity(string severity)
+        {
+            // var filteredIncidents = _context.Incidents.Where(i => i.Severity.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
+            var incidents = from i in _context.Incidents
+                            where i.Severity.Contains(severity)
+                            select i;
+            return Ok(incidents);
+        }
+        //[HttpGet("getbyseverityasync/{severity}")]
+        //public async Task<IActionResult> FilterBySeverity2(string severity)
+        //{
+        //    var incidents = await _context.Incidents.Where(i => i.Severity.Contains(severity)).ToListAsync();
+            
+        //    return Ok(incidents);
+        //}
     }
 }
