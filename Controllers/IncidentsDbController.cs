@@ -86,7 +86,7 @@ namespace IncidentAPI_ISIMM_MP1_GL.Controllers
                 return BadRequest($"Severity must be one of the following: {string.Join(", ", AllowedSeverities)}");
             }
 
-            incident.Status = "OPEN";
+            incident.Status = "RESOLVED";
             incident.CreatedAt = DateTime.Now;
             _context.Incidents.Add(incident);
             await _context.SaveChangesAsync();
